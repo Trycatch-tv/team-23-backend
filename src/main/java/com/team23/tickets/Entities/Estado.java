@@ -1,0 +1,37 @@
+package com.team23.tickets.Entities;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Table(name = "estado")
+@Entity
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Estado implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Basic(optional = false)
+  @Column(name = "id_estado")
+  private Integer idEstado;
+
+  @Column(name ="nombre", nullable = false)
+  private String nombre;
+
+  @Column(name = "activo", columnDefinition = "boolean default true")
+  private boolean activo;
+
+
+}

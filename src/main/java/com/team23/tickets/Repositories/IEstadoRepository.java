@@ -1,0 +1,15 @@
+package com.team23.tickets.Repositories;
+
+import com.team23.tickets.Entities.Estado;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface IEstadoRepository extends JpaRepository<Estado,Integer> {
+
+    @Query("Select estados from Estado estados where estados.activo = true")
+    List<Estado> listarEstados();
+}

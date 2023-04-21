@@ -1,44 +1,37 @@
 package com.team23.tickets.Entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "estado")
 @Entity
+@Table(name = "movimientos_estado")
 @Setter
 @Getter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Estado implements Serializable {
-
-  private static final long serialVersionUID = 1L;
+public class MovimientosEstado {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_movimiento")
   @Basic(optional = false)
-  @Column(name = "id_estado")
-  private Integer idEstado;
+  private Integer idMovimiento;
 
-  @Column(name ="nombre", nullable = false)
-  private String nombre;
+  @Column(name = "id_estado_actual")
+  private Integer idEstadoActual;
+
+  @Column(name = "id_estado_final")
+  private Integer idEstadoFinal;
 
   @Column(name = "activo", columnDefinition = "boolean default true")
   private boolean activo;
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_estado_actual")
-  private Set<MovimientosEstado> movimientosEstados =  new HashSet<>();
-
 
 
 }

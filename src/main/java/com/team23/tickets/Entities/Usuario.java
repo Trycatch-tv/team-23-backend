@@ -59,4 +59,7 @@ public class Usuario implements Serializable {
   @Enumerated(EnumType.STRING)
   private Roles rol;
 
+  @Column(name = "nombre_avatar")
+  private String nombre_avatar;
+
 }

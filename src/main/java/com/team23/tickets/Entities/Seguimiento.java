@@ -32,7 +32,7 @@ public class Seguimiento implements Serializable {
   private String descripcion;
 
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
-  @Column(name = "id_solicitud")
+  @JoinColumn(name = "id_solicitud")
   @Transient
   private Solicitud solicitud;
 
@@ -44,7 +44,7 @@ public class Seguimiento implements Serializable {
   private Date fechaCreacion;
 
   @OneToOne(fetch = FetchType.LAZY, optional = false)
-  @Column(name = "id_usuario")
+  @JoinColumn(name = "id_usuario")
   private Usuario usuario;
 
 

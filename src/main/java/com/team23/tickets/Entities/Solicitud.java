@@ -34,11 +34,11 @@ public class Solicitud implements Serializable {
   private long idSolicitud;
 
   @OneToOne(optional = false, fetch = FetchType.LAZY)
-  @Column(name = "id_tipo_solicitud")
+  @JoinColumn(name = "id_tipo_solicitud")
   private TipoSolicitud tipoSolicitud;
 
   @OneToOne(optional = false, fetch = FetchType.LAZY)
-  @Column(name = "id_estado")
+  @JoinColumn(name = "id_estado")
   private Estado estado;
 
   @Column(name = "descripcion_solicitud")
@@ -60,13 +60,13 @@ public class Solicitud implements Serializable {
   private Date fechaCierre;
 
   @OneToOne(optional = false, fetch = FetchType.LAZY)
-  @Column(name = "id_usuario_crea")
+  @JoinColumn(name = "id_usuario_crea")
   @JsonIgnore
   @Transient
   private Usuario usuarioCrea;
 
   @OneToOne(optional = true, fetch = FetchType.LAZY)
-  @Column(name = "id_usuario_cierre")
+  @JoinColumn(name = "id_usuario_cierre")
   @JsonIgnore
   @Transient
   private Usuario usuarioCierre;

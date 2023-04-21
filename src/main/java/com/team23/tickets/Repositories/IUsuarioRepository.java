@@ -12,4 +12,8 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query("Select usuario from Usuario usuario where usuario.activo = true")
     List<Usuario> listarUsuariosActivos();
+
+
+
+
 }

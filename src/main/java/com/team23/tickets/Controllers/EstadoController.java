@@ -27,4 +27,12 @@ public class EstadoController implements IEstadoController {
     public ResponseEntity<GenericResponseDTO> listarEstados() {
         return estadoService.findAll();
     }
+
+    @Override
+    @GetMapping("listarPorNombre/{nombre}/{activo}")
+    public ResponseEntity<GenericResponseDTO> listaNombreActivo(@PathVariable String nombre, @PathVariable boolean activo ) {
+        return estadoService.findByNombreAndactivo(nombre, activo);
+    }
+
+
 }

@@ -8,4 +8,5 @@ public interface IEstadoController {
 
     ResponseEntity<GenericResponseDTO> listaEstadoFinales(Integer idEstado);
     ResponseEntity<GenericResponseDTO> listarEstados();
+    ResponseEntity<GenericResponseDTO> listaNombreActivo(String nombre, boolean activo);
 }

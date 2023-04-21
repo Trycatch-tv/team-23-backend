@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IEstadoRepository extends JpaRepository<Estado,Integer> {
@@ -15,5 +16,7 @@ public interface IEstadoRepository extends JpaRepository<Estado,Integer> {
     List<Estado> listarEstados();
 
     List<Estado> findEstadosByIdEstado(@Param("id") Integer id);
+
+    Optional<Estado> findEstadoByNombreAndActivo(@Param("nombre") String nombre, @Param("activo") boolean activo);
 
 }

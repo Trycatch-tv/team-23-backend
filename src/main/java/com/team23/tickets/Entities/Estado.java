@@ -35,9 +35,11 @@ public class Estado implements Serializable {
   @Column(name = "activo", columnDefinition = "boolean default true")
   private boolean activo;
 
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "id_estado_actual")
   private Set<MovimientosEstado> movimientosEstados =  new HashSet<>();
+
 
 
 

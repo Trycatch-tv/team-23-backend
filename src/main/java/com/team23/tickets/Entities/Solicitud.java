@@ -1,17 +1,14 @@
 package com.team23.tickets.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.json.JSONPropertyIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "solicitud")
@@ -21,7 +18,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Solicitud implements Serializable {
 
@@ -46,7 +42,6 @@ public class Solicitud implements Serializable {
   private String descripcionSolicitud;
 
   @Column(name = "descripcion_solucion")
-  @Basic(optional = false)
   private String descripcionSolucion;
 
   @Temporal(TemporalType.DATE)
@@ -59,22 +54,22 @@ public class Solicitud implements Serializable {
   @Basic(optional = true)
   private Date fechaCierre;
 
-  @OneToOne(optional = false, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_usuario_crea")
-  @JsonIgnore
-  @Transient
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_usuario_crea", referencedColumnName = "id_usuario")
   private Usuario usuarioCrea;
 
-  @OneToOne(optional = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_usuario_cierre")
-  @JsonIgnore
-  @Transient
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_usuario_cierre", referencedColumnName = "id_usuario")
   private Usuario usuarioCierre;
 
+  @ManyToOne(optional = true, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_usuario_asignado", referencedColumnName = "id_usuario")
+  private Usuario usuarioAsignado;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "id_solicitud")
-  private Set<Seguimiento> seguimiento= new HashSet<>();
+  @JsonManagedReference
+  private List<Seguimiento> seguimiento= new ArrayList<>();
 
 
 

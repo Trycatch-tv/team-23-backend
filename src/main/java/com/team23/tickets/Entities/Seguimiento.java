@@ -1,5 +1,7 @@
 package com.team23.tickets.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -21,7 +23,6 @@ public class Seguimiento implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-
   @Id
   @Column(name = "id_solicitud")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +32,9 @@ public class Seguimiento implements Serializable {
   @Basic(optional = false)
   private String descripcion;
 
-  @ManyToOne(optional = false, fetch = FetchType.EAGER)
-  @JoinColumn(name = "id_solicitud")
-  @Transient
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_solicitud", insertable = false, updatable = false)
+  @JsonBackReference
   private Solicitud solicitud;
 
   @Column(name = "activo", columnDefinition = "boolean default true")
@@ -43,7 +44,7 @@ public class Seguimiento implements Serializable {
   @Column(name = "fecha_creacion")
   private Date fechaCreacion;
 
-  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "id_usuario")
   private Usuario usuario;
 

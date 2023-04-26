@@ -1,14 +1,13 @@
 package com.team23.tickets.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import com.team23.tickets.DTO.SolicitudDTO;
 import com.team23.tickets.Enum.Roles;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "usuario")
@@ -22,7 +21,6 @@ import java.util.Date;
 public class Usuario implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +42,7 @@ public class Usuario implements Serializable {
   @Column(name = "activo", columnDefinition = "boolean default true")
   private boolean activo;
 
-  @Column(name = "fechaCreacion")
+  @Column(name = "fecha_creacion")
   @Temporal(TemporalType.DATE)
   private Date fechaCreacion;
 
@@ -61,5 +59,18 @@ public class Usuario implements Serializable {
 
   @Column(name = "nombre_avatar")
   private String nombre_avatar;
+
+  /*@OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_usuario_crea")
+  @JsonManagedReference
+  private List<Solicitud> solicitudes_credas = new ArrayList<>();
+*/
+
+
+  /*public void agregarSolicitud(Solicitud solicitud){
+    solicitud.setUsuarioCrea(this);
+    this.solicitudes_credas.add(solicitud);
+
+  }*/
 
 }

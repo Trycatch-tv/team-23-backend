@@ -13,10 +13,12 @@ import com.team23.tickets.Repositories.IUsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,16 +49,12 @@ public class SolicitudService implements ISolicitudService{
         try {
 
             List<Solicitud> ltsSolicitud = iSolicitudRepository.listarSolicitudes();
-            if (ltsSolicitud.isEmpty()){
-                mensaje = "No se encontraron resultados";
-            }else {
-                mensaje = "Se listan las Solicitudes";
-            }
-
-
+            mensaje = ltsSolicitud.isEmpty() ?  "No se encontraron resultados" : "Se listan las Solicitudes";
+            Type listTypeDestino = new TypeToken<List<SolicitudDTO>>(){}.getType();
+            List<SolicitudDTO> ltsSolitictudDTO = mapper.map(ltsSolicitud, listTypeDestino );
 
             return new ResponseEntity<>(GenericResponseDTO.builder()
-                    .objectResponse(ltsSolicitud).message(mensaje)
+                    .objectResponse(ltsSolitictudDTO).message(mensaje)
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 
         }catch (Exception e){
@@ -85,7 +83,7 @@ public class SolicitudService implements ISolicitudService{
             mensaje = "Se encontro un resgistro";
 
             return new ResponseEntity<>(GenericResponseDTO.builder()
-                    .objectResponse(solicitud)
+                    .objectResponse(mapper.map(solicitud, SolicitudDTO.class))
                     .message(mensaje)
                     .statusCode(HttpStatus.OK.value()).build(),
                     HttpStatus.OK);
@@ -95,7 +93,7 @@ public class SolicitudService implements ISolicitudService{
             log.error("Error : en Solicitud " + e.getMessage()+"\n"+
                     e.getLocalizedMessage());
 
-            return new ResponseEntity<>(GenericResponseDTO.builder().objectResponse(new SolicitudDTO())
+            return new ResponseEntity<>(GenericResponseDTO.builder().objectResponse(new Exception("Error"))
                     .message("Error en el Servidor!!. ")
                     .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -135,7 +133,7 @@ public class SolicitudService implements ISolicitudService{
             iSolicitudRepository.save(solicitud);
             mensaje = "Solicitud creada con exito!!";
             return new ResponseEntity<>(GenericResponseDTO.builder()
-                    .objectResponse(solicitud).message(mensaje)
+                    .objectResponse(mapper.map(solicitud, SolicitudDTO.class)).message(mensaje)
                     .statusCode(HttpStatus.CREATED.value()).build(), HttpStatus.OK);
 
         }catch (Exception e){
@@ -180,7 +178,7 @@ public class SolicitudService implements ISolicitudService{
             Solicitud  solicitud = iSolicitudRepository.findById(json_in.getLong("id_solicitud")).get();
             Integer idUsuario = json_in.getInt("usuario_id");
             Optional<Usuario> userOpt = usuarioRepository.findById(idUsuario);
-            if(!userOpt.isPresent()){
+            if(userOpt.isEmpty()){
                 mensaje = "El Usuario no existe";
                 return new ResponseEntity<>(GenericResponseDTO.builder()
                         .objectResponse(null)
@@ -231,7 +229,7 @@ public class SolicitudService implements ISolicitudService{
 
             mensaje = "Se cambio el estado con exito!!";
             return new ResponseEntity<>(GenericResponseDTO.builder()
-                    .objectResponse(solicitud.get()).message(mensaje)
+                    .objectResponse(mapper.map(solicitud.get(), SolicitudDTO.class)).message(mensaje)
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 
         }catch (Exception e){

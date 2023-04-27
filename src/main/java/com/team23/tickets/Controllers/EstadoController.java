@@ -24,7 +24,7 @@ public class EstadoController implements IEstadoController {
     }
 
     @Override
-    @GetMapping("/listarEstados")
+    @GetMapping("/v1/srvTeam23/listarEstados")
     public ResponseEntity<GenericResponseDTO> listarEstados() {
         return estadoService.findAll();
     }

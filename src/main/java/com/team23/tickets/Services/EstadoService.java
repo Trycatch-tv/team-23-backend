@@ -5,10 +5,13 @@ import com.team23.tickets.DTO.GenericResponseDTO;
 import com.team23.tickets.Entities.Estado;
 import com.team23.tickets.Repositories.IEstadoRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +21,11 @@ public class EstadoService implements IEstadoService{
 
     private final IEstadoRepository iEstadoRepository;
     private String mensaje;
-    ModelMapper mapper =  new ModelMapper();
+    private final ModelMapper mapper;
 
-    public EstadoService(IEstadoRepository iEstadoRepository) {
+    public EstadoService(IEstadoRepository iEstadoRepository, ModelMapper mapper) {
         this.iEstadoRepository = iEstadoRepository;
+        this.mapper = mapper;
     }
 
 
@@ -53,19 +57,15 @@ public class EstadoService implements IEstadoService{
         try{
 
             List<Estado> listaEstados = iEstadoRepository.findAll();
-            List<EstadoDTO> lstDto = new ArrayList<>();
-            if (listaEstados.isEmpty()){
-                mensaje = "No se encontraron registros de Estados";
-            }else{
-
-                listaEstados.forEach(e ->{
+            Type listTypeDestino = new TypeToken<List<EstadoDTO>>(){}.getType();
+            List<EstadoDTO> lstDto =  mapper.map(listaEstados,listTypeDestino);
+            mensaje = listaEstados.isEmpty() ? "No se encontraron registros de Estados" : "Se listan todos los Estados Activos";
+            /*
+               //List<EstadoDTO> lstDto = new ArrayList<>();listaEstados.forEach(e ->{
                     EstadoDTO dto = mapper.map(e, EstadoDTO.class);
                     lstDto.add(dto);
-
                 });
-                mensaje = "Se listan todos los Estados Activos";
-            }
-
+            */
             return new ResponseEntity<>(GenericResponseDTO.builder().objectResponse(lstDto )
                     .message(mensaje).
                             statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
@@ -85,14 +85,9 @@ public class EstadoService implements IEstadoService{
         try{
 
             Optional<Estado> estado = iEstadoRepository.findEstadoByNombreAndActivo(nombre, activo);
-            EstadoDTO estadoDTO = null;
-            if(!estado.isPresent()){
-                mensaje = "No se encontraron resultados";
-            }else{
-                Estado est = estado.get();
-                estadoDTO = mapper.map(est, EstadoDTO.class);
-                mensaje = "Se encontro resultado";
-            }
+           mensaje =  (estado.isEmpty() ? "No se encontraron resultados" :  "Se encontro resultado");
+           EstadoDTO estadoDTO = mapper.map(estado.orElseGet(Estado::new), EstadoDTO.class);
+
             return  new ResponseEntity<>(GenericResponseDTO.builder().objectResponse(estadoDTO)
                     .message(mensaje).statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 

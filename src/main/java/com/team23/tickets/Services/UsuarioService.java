@@ -91,7 +91,7 @@ public class UsuarioService implements IUsuarioService{
                         .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
                 //mapper.map(user.get(), UsuarioDTO.class
             return new ResponseEntity(GenericResponseDTO.builder()
-                    .objectResponse(mapper.map(user.get(), UsuarioDTO.class))
+                    .objectResponse(mapper.map(user.orElseGet(null), UsuarioDTO.class))
                     .message("Se ha encontrado un Usuario con id : "+ idUsuario)
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 
@@ -122,7 +122,7 @@ public class UsuarioService implements IUsuarioService{
             usuarioRepository.save(user.get());
 
             return new ResponseEntity(GenericResponseDTO.builder()
-                    .objectResponse(mapper.map(user.get(), UsuarioDTO.class))
+                    .objectResponse(mapper.map(user.orElseGet(null), UsuarioDTO.class))
                     .message("Usuario eliminado con exito!!")
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 
@@ -151,7 +151,7 @@ public class UsuarioService implements IUsuarioService{
             usuarioRepository.save(user.get());
             //mapper.map(user.get(), UsuarioDTO.class
             return new ResponseEntity(GenericResponseDTO.builder()
-                    .objectResponse(mapper.map(user.get(), UsuarioDTO.class))
+                    .objectResponse(mapper.map(user.orElseGet(null), UsuarioDTO.class))
                     .message("Usuario activado con exito!!")
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 

@@ -66,6 +66,12 @@ public class Solicitud implements Serializable {
   @JoinColumn(name = "id_usuario_asignado", referencedColumnName = "id_usuario")
   private Usuario usuarioAsignado;
 
+  @Column(name = "titulo")
+  private String titulo;
+
+  @Column(name = "url_respuesta")
+  private String urlRespuesta;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "id_solicitud")
   @JsonManagedReference

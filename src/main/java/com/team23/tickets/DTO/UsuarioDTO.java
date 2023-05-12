@@ -35,7 +35,7 @@ public class UsuarioDTO {
 
         private String nombre_avatar;
 
-        private List<SolicitudDTO> solicitudes_credas;
+        //private List<SolicitudDTO> solicitudes_credas;
 
 
     }

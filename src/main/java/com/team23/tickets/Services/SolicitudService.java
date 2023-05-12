@@ -128,6 +128,7 @@ public class SolicitudService implements ISolicitudService{
             solicitud.setUsuarioCrea(userOpt.get());
             solicitud.setTipoSolicitud(tipoOpt.get());
             solicitud.setEstado(estOpt.get());
+            solicitud.setTitulo(json_in.getString("titulo"));
             solicitud.setFechaCreacion(new Date());
             solicitud.setDescripcionSolicitud(json_in.getString("descripcion_solicitud"));
             iSolicitudRepository.save(solicitud);
@@ -154,9 +155,10 @@ public class SolicitudService implements ISolicitudService{
             Optional<Solicitud> solicitud = iSolicitudRepository.findById(idSolicitud);
             mensaje = (solicitud.isEmpty()) ?  "No se encontro la solicitud" : "Se obtiene solicitud con exito!!";
 
-            System.out.println(solicitud.get().toString());
             return new ResponseEntity<>(GenericResponseDTO.builder()
-                    .objectResponse(mapper.map(solicitud.get(), SolicitudDTO.class)).message(mensaje)
+                    .objectResponse(
+                            !solicitud.isEmpty() ? mapper.map(solicitud.get(), SolicitudDTO.class): null
+                    ).message(mensaje)
                     .statusCode(HttpStatus.OK.value()).build(), HttpStatus.OK);
 
         }catch (Exception e){
@@ -191,6 +193,7 @@ public class SolicitudService implements ISolicitudService{
             solicitud.setEstado(estOpt.get());
             solicitud.setFechaCierre(new Date());
             solicitud.setDescripcionSolucion(json_in.getString("descripcion_solucion"));
+            solicitud.setUrlRespuesta(json_in.getString("url"));
             iSolicitudRepository.save(solicitud);
             mensaje = "Se cierra la Solicitud con exito!!. ";
 

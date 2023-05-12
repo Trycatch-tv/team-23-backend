@@ -5,6 +5,7 @@ import com.team23.tickets.Entities.Seguimiento;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,10 @@ public class SolicitudDTO {
     private UsuarioDTO usuarioCierre;
 
     private UsuarioDTO usuarioAgisgando;
+
+    private String titulo;
+
+    private String urlRespuesta;
 
     private List<SeguimientoDTO> seguimiento;
 }
